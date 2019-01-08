@@ -1,6 +1,7 @@
 require('./config/config');
 const bodyParser = require('body-parser');
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -38,5 +39,7 @@ app.put('/usuario/:id', function(req, res) {
 app.delete('/usuario', function(req, res) {
     res.send('DELETE Local');
 });
+
+mongoose.connect('mongodb://localhost:27017/cafe', (err) => {});
 
 app.listen(GET_PORT);
