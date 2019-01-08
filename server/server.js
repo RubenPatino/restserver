@@ -36,7 +36,7 @@ app.put('/usuario/:id', function(req, res) {
 });
 
 app.delete('/usuario', function(req, res) {
-    res.send('DELETE');
+    res.send('DELETE Local');
 });
 
 app.listen(GET_PORT);
