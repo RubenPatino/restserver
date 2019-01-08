@@ -1,14 +1,17 @@
 {
-  "name": "restserver",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Rapafull",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.16.4"
-  }
+    "name": "restserver",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node ./server/server.js",
+        "nodemon": "nodemon ./server/server.js"
+    },
+    "author": "Rapafull",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.18.3",
+        "express": "^4.16.4"
+    }
 }
