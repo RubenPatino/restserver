@@ -11,16 +11,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(require('./routes/userRouter'));
-require('./db/mongo');
+//require('./db/mongo');
 
-// mongoose.connect('mongodb://localhost:27017/cafe', { useNewUrlParser: true }).then(() => {
-//     console.log('Conectado a mongo');
-// }).catch((err) => {
-//     throw err;
-// });
+mongoose.connect(GET_URL, { useNewUrlParser: true }).then(() => {
+    console.log(`Conectado a mongo, url : ${GET_URL}`);
+}).catch((err) => {
+    throw err;
+});
 
 
 app.listen(GET_PORT, (err => {
     if (err) throw err;
-    console.log(`Recibiendo peticiones del puerto ${GET_PORT}`);
+    console.log(`Recibiendo peticiones del puerto : ${GET_PORT}`);
 }));
