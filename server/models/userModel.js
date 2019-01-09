@@ -11,7 +11,8 @@ let usuarioSchema = new Schema({
     },
     email: {
         type: String,
-        unique: true,
+        createIndexes: true,
+        //unique: true,
         required: [true, 'El correo es obligatorio.']
     },
     password: {

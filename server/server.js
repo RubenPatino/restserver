@@ -11,7 +11,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(require('./routes/userRouter'));
-//require('./db/mongo');
 
 mongoose.connect(URI, { useNewUrlParser: true }).then(() => {
     console.log(`Conectado a mongo, url : ${URI}`);
