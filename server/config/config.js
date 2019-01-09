@@ -10,6 +10,6 @@ let url;
 if (entorno === 'dev') {
     url = 'mongodb://localhost:27017/cafe';
 } else {
-    url = 'mongodb://cafe-user:Admin2113@ds153304.mlab.com:53304/cafe';
+    url = process.env.MONGO_URI;
 }
-GET_URL = url;
+URI = url;

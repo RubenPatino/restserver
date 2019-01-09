@@ -13,12 +13,11 @@ app.use(bodyParser.json());
 app.use(require('./routes/userRouter'));
 //require('./db/mongo');
 
-mongoose.connect(GET_URL, { useNewUrlParser: true }).then(() => {
-    console.log(`Conectado a mongo, url : ${GET_URL}`);
+mongoose.connect(URI, { useNewUrlParser: true }).then(() => {
+    console.log(`Conectado a mongo, url : ${URI}`);
 }).catch((err) => {
     throw err;
 });
-
 
 app.listen(GET_PORT, (err => {
     if (err) throw err;
