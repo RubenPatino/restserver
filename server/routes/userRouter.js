@@ -23,7 +23,8 @@ app.get('/usuario', function(req, res) {
                     err
                 });
             }
-            Usuario.count(condiccion, (err, count) => {
+
+            Usuario.collection.countDocuments(condiccion, (err, count) => {
                 // if (err) {
                 //     return res.status(400).json({
                 //         ok: false,
