@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 
-const Usuario = require('../models/userModel');
+const Usuario = require('../models/user');
 
 app.get('/usuario', function(req, res) {
     let desde = Number(req.query.desde || 0);

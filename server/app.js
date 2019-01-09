@@ -10,13 +10,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.use(require('./routes/userRouter'));
+//Routes
+app.use(require('./routes/index'));
 
-mongoose.connect(URI, { useNewUrlParser: true }).then(() => {
-    console.log(`Conectado a mongo, url : ${URI}`);
-}).catch((err) => {
-    throw err;
-});
+// daba base mongo connection
+require('./db/connect');
 
 app.listen(GET_PORT, (err => {
     if (err) throw err;

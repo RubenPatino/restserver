@@ -6,10 +6,10 @@ GET_PORT = process.env.PORT || 3000;
 let entorno = process.env.NODE_ENV || 'dev';
 
 //mongo conecction
-let url;
+let mongoURL;
 if (entorno === 'dev') {
-    url = 'mongodb://localhost:27017/cafe';
+    mongoURL = 'mongodb://localhost:27017/cafe';
 } else {
-    url = process.env.MONGO_URI;
+    mongoURL = process.env.MONGO_URI;
 }
-URI = url;
+URI = mongoURL;
