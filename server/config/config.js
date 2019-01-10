@@ -7,14 +7,16 @@ process.env.PORT = process.env.PORT || 3000;
 let entorno = process.env.NODE_ENV || 'dev';
 
 //mongo conecction
+//mongodb://cafe-user:Admin2113@ds153304.mlab.com:53304/cafe
 if (entorno === 'dev') {
     process.env.URI = 'mongodb://localhost:27017/cafe';
 } else {
-    process.env.URI = process.env.MONGO_URI;
+    process.env.URI = process.env.URI;
 }
 
 //key para el token
-process.env.KEY = process.env.HEROKU_SEED || 'misuperllavesecreta';
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+process.env.KEY = process.env.KEY || 'misuperllavesecreta';
 
 //tiempo para el token
 process.env.EXPIRE = 60 * 60;

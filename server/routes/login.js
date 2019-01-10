@@ -8,7 +8,9 @@ const app = express();
 const Usuario = require('../models/user');
 
 app.post('/login', (req, res) => {
+
     let body = req.body;
+
     Usuario.findOne({ email: body.email }, (err, userDB) => {
         if (err) {
             return res.status(500).json({
@@ -16,6 +18,7 @@ app.post('/login', (req, res) => {
                 err
             });
         };
+
         if (!userDB) {
             return res.status(400).json({
                 status: false,
@@ -29,7 +32,7 @@ app.post('/login', (req, res) => {
             });
         }
 
-        let token = jwt.sign({ userDB }, SEED, { expiresIn: EXPIRE });
+        let token = jwt.sign({ userDB }, process.env.KEY, { expiresIn: process.env.EXPIRE });
 
         res.json({
             status: true,
