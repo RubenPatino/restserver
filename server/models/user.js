@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const validator = require('validator');
 
 let Schema = mongoose.Schema;
+let rolesPermitidos = {
+    values: ['ADMIN-ROLE', 'USER-ROLE'],
+    message: '{VALUE} no es un rol valido.'
+};
 
 let usuarioSchema = new Schema({
     nombre: {
@@ -13,7 +18,9 @@ let usuarioSchema = new Schema({
         type: String,
         createIndexes: true,
         //unique: true,
-        required: [true, 'El correo es obligatorio.']
+        required: [true, 'El correo es obligatorio.'],
+        validate: [validator.isEmail, 'invalid email']
+
     },
     password: {
         type: String,
@@ -28,10 +35,7 @@ let usuarioSchema = new Schema({
     role: {
         type: String,
         default: 'USER_ROLE',
-        enum: {
-            values: ['ADMIN-ROLE', 'USER-ROLE'],
-            message: '{VALUE} no es un rol valido.'
-        }
+        enum: rolesPermitidos
     },
     img: {
         type: String,
@@ -42,6 +46,15 @@ let usuarioSchema = new Schema({
         default: true
     }
 });
+
+usuarioSchema.methods.toJSON = function() {
+    let user = this;
+    let userObject = user.toObject();
+    delete userObject.password;
+    delete userObject.__v;
+    return userObject;
+}
+
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} El correo electronico ya esta registrado.' });
 
 module.exports = mongoose.model('Usuarios', usuarioSchema);

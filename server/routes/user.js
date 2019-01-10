@@ -18,8 +18,8 @@ app.get('/usuario', function(req, res) {
         .limit(limite)
         .exec((err, userDB) => {
             if (err) {
-                return res.status(400).json({
-                    ok: false,
+                return res.status(500).json({
+                    status: false,
                     err
                 });
             }
@@ -32,7 +32,7 @@ app.get('/usuario', function(req, res) {
                 //     });
                 // }
                 res.json({
-                    ok: true,
+                    status: true,
                     count: count,
                     userDB
                 });
@@ -53,8 +53,8 @@ app.post('/usuario', function(req, res) {
 
     user.save((err, userDB) => {
         if (err) {
-            return res.status(400).json({
-                ok: false,
+            return res.status(500).json({
+                status: false,
                 err
             });
         }
@@ -75,8 +75,8 @@ app.put('/usuario/:id', function(req, res) {
 
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, userDB) => {
         if (err) {
-            return res.status(400).json({
-                ok: false,
+            return res.status(500).json({
+                status: false,
                 err
             });
         }
@@ -92,21 +92,21 @@ app.delete('/usuario/:id', function(req, res) {
     //Cambio de estado.
     Usuario.findByIdAndUpdate(id, { estado: false }, { new: true }, (err, userDB) => {
         if (err) {
-            return res.status(400).json({
-                ok: false,
+            return res.status(500).json({
+                status: false,
                 err
             });
         }
         if (!userDB) {
-            return res.status(400).json({
-                ok: false,
+            return res.status(500).json({
+                status: false,
                 err: {
                     message: 'Usuario no encontrado.'
                 }
             });
         }
         res.json({
-            ok: true,
+            status: true,
             userDB
         });
     });
