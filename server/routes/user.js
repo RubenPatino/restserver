@@ -1,12 +1,15 @@
 const express = require('express');
 const pick = require('object.pick');
 const bcrypt = require('bcrypt');
-
 const app = express();
-
+const { validateToken } = require('../middlewares/authentication');
 const Usuario = require('../models/user');
 
-app.get('/usuario', function(req, res) {
+app.get('/usuario', validateToken, (req, res) => {
+    // return res.json({
+    //     userToken
+    // });
+
     let desde = Number(req.query.desde || 0);
     let limite = Number(req.query.limite || 0);
     let condiccion = {
@@ -25,12 +28,12 @@ app.get('/usuario', function(req, res) {
             }
 
             Usuario.collection.countDocuments(condiccion, (err, count) => {
-                // if (err) {
-                //     return res.status(400).json({
-                //         ok: false,
-                //         err
-                //     });
-                // }
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        err
+                    });
+                }
                 res.json({
                     status: true,
                     count: count,
@@ -41,7 +44,7 @@ app.get('/usuario', function(req, res) {
         });
 });
 
-app.post('/usuario', function(req, res) {
+app.post('/usuario', validateToken, (req, res) => {
     let body = req.body;
 
     let user = new Usuario({
@@ -66,7 +69,7 @@ app.post('/usuario', function(req, res) {
     });
 });
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', validateToken, (req, res) => {
     let id = req.params.id;
     let body = pick(req.body, ['nombre', 'email', 'role', 'img', 'estado']);
 
@@ -80,6 +83,12 @@ app.put('/usuario/:id', function(req, res) {
                 err
             });
         }
+        if (!userDB) {
+            return res.status(400).json({
+                status: false,
+                err: 'No existe el usuario'
+            });
+        }
         res.json({
             ok: true,
             userDB
@@ -87,7 +96,7 @@ app.put('/usuario/:id', function(req, res) {
     });
 });
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', validateToken, (req, res) => {
     let id = req.params.id;
     //Cambio de estado.
     Usuario.findByIdAndUpdate(id, { estado: false }, { new: true }, (err, userDB) => {

@@ -1,4 +1,5 @@
 //puerto
+
 GET_PORT = process.env.PORT || 3000;
 
 //entorno.
@@ -14,7 +15,7 @@ if (entorno === 'dev') {
 }
 URI = mongoURL;
 //Cemilla para el token
-SEED = process.env.HEROKU_SEED || 'my-secret';
+SEED = process.env.HEROKU_SEED || 'misuperllavesecreta';
 
 //tiempo para el token
 EXPIRE = 60 * 60;
