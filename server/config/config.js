@@ -13,3 +13,8 @@ if (entorno === 'dev') {
     mongoURL = process.env.MONGO_URI;
 }
 URI = mongoURL;
+//Cemilla para el token
+SEED = process.env.HEROKU_SEED || 'my-secret';
+
+//tiempo para el token
+EXPIRE = 60 * 60;

@@ -1,3 +1,4 @@
+require('../config/config');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -28,7 +29,7 @@ app.post('/login', (req, res) => {
             });
         }
 
-        let token = jwt.sign({ userDB }, 'mi-secreto', { expiresIn: 60 * 60 });
+        let token = jwt.sign({ userDB }, SEED, { expiresIn: EXPIRE });
 
         res.json({
             status: true,
