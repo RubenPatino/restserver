@@ -1,8 +1,11 @@
 require('../config/config');
 const mongoose = require('mongoose');
 
-mongoose.connect(URI, { useNewUrlParser: true }).then(() => {
-    console.log(`Conectado a mongo, uri : ${URI}`);
+
+const opts = { useNewUrlParser: true };
+
+mongoose.connect(process.env.URI, opts).then(() => {
+    console.log(`Conectado a mongo, uri : ${process.env.URI}`);
 }).catch((err) => {
     throw err;
 });

@@ -1,21 +1,20 @@
 //puerto
 
-GET_PORT = process.env.PORT || 3000;
+process.env.PORT = process.env.PORT || 3000;
 
 //entorno.
 
 let entorno = process.env.NODE_ENV || 'dev';
 
 //mongo conecction
-let mongoURL;
 if (entorno === 'dev') {
-    mongoURL = 'mongodb://localhost:27017/cafe';
+    process.env.URI = 'mongodb://localhost:27017/cafe';
 } else {
-    mongoURL = process.env.MONGO_URI;
+    process.env.URI = process.env.MONGO_URI;
 }
-URI = mongoURL;
-//Cemilla para el token
-SEED = process.env.HEROKU_SEED || 'misuperllavesecreta';
+
+//key para el token
+process.env.KEY = process.env.HEROKU_SEED || 'misuperllavesecreta';
 
 //tiempo para el token
-EXPIRE = 60 * 60;
+process.env.EXPIRE = 60 * 60;

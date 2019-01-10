@@ -73,7 +73,8 @@ app.put('/usuario/:id', validateToken, (req, res) => {
     // delete body.password;
     // delete body.google;
 
-    Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, userDB) => {
+
+    Usuario.findOneAndUpdate(id, body, { new: true, runValidators: true }, (err, userDB) => {
         if (err) {
             return res.status(500).json({
                 status: false,
@@ -96,7 +97,7 @@ app.put('/usuario/:id', validateToken, (req, res) => {
 app.delete('/usuario/:id', validateToken, (req, res) => {
     let id = req.params.id;
     //Cambio de estado.
-    Usuario.findByIdAndUpdate(id, { estado: false }, { new: true }, (err, userDB) => {
+    Usuario.findOneAndDelete(id, { estado: false }, { new: true }, (err, userDB) => {
         if (err) {
             return res.status(500).json({
                 status: false,

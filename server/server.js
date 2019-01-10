@@ -16,7 +16,7 @@ app.use(require('./routes/index'));
 // daba base mongo connection
 require('./db/connect');
 
-app.listen(GET_PORT, (err => {
+app.listen(process.env.PORT, (err => {
     if (err) throw err;
-    console.log(`Recibiendo peticiones del puerto : ${GET_PORT}`);
+    console.log(`Recibiendo peticiones del puerto : ${process.env.PORT}`);
 }));
