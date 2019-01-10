@@ -19,4 +19,4 @@ if (entorno === 'dev') {
 process.env.KEY = process.env.KEY || 'misuperllavesecreta';
 
 //tiempo para el token
-process.env.EXPIRE = 60 * 60;
+process.env.EXPIRE = '1h';

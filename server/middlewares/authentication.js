@@ -9,7 +9,7 @@ function validateToken(req, res, next) {
         });
     }
 
-    let token = req.get('token');
+    let token = req.get('token').trim();
 
     jwt.verify(token, process.env.KEY, (err, decode) => {
         if (err) {
