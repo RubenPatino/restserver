@@ -23,8 +23,6 @@ function validateToken(req, res, next) {
         next();
 
     });
-
-
 }
 
 module.exports = { validateToken };

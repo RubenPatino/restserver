@@ -6,9 +6,6 @@ const { validateToken } = require('../middlewares/authentication');
 const Usuario = require('../models/user');
 
 app.get('/usuario', validateToken, (req, res) => {
-    // return res.json({
-    //     userToken
-    // });
 
     let desde = Number(req.query.desde || 0);
     let limite = Number(req.query.limite || 0);
@@ -44,7 +41,7 @@ app.get('/usuario', validateToken, (req, res) => {
         });
 });
 
-app.post('/usuario', validateToken, (req, res) => {
+app.post('/usuario', (req, res) => {
     let body = req.body;
 
     let user = new Usuario({
