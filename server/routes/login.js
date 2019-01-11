@@ -2,33 +2,48 @@ require('../config/config');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const pick = require('object.pick');
 
 const app = express();
 
 const Usuario = require('../models/user');
 
 app.post('/login', (req, res) => {
+    let body = pick(req.body, ['email', 'password']);
 
-    let body = req.body;
+    let email = body.email;
+    let pass = body.password;
 
-    Usuario.findOne({ email: body.email }, (err, userDB) => {
-        if (err) {
-            return res.status(500).json({
-                status: false,
-                err
-            });
-        };
+    if (!email || !pass) {
+        return res.json({
+            status: false,
+            message: 'Completa todos los campos.'
+        });
+    }
+
+    let condiccion = {
+        email: email
+    };
+
+    Usuario.findOne(condiccion, (err, userDB) => {
 
         if (!userDB) {
             return res.status(400).json({
                 status: false,
-                message: '(Correo) o contraseña incorrectos!!!'
+                message: 'Usuario no esta registrado.'
             });
         }
-        if (!bcrypt.compareSync(body.password, userDB.password)) {
+        if (!userDB.estado) {
             return res.status(400).json({
                 status: false,
-                message: 'Correo o (contraseña) incorrectos!!!'
+                message: 'El usuario esta desactivado.'
+            });
+        }
+
+        if (!bcrypt.compareSync(pass, userDB.password)) {
+            return res.status(400).json({
+                status: false,
+                message: 'Correo o contraseña incorrectos!!!'
             });
         }
 

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-function validateToken(req, res, next) {
+function validarToken(req, res, next) {
 
     if (!req.headers.token) {
         return res.status(403).json({
@@ -19,10 +19,22 @@ function validateToken(req, res, next) {
             });
         };
 
-        userToken = decode.userDB;
+        userLogin = decode.userDB;
         next();
-
     });
 }
 
-module.exports = { validateToken };
+function validarRol(req, res, next) {
+
+    let user_rol = userLogin.role;
+    if (user_rol !== 'ADMIN-ROLE') {
+        return res.status(400).json({
+            status: false,
+            message: 'No eres un administrador'
+        });
+    }
+
+    next();
+}
+
+module.exports = { validarToken, validarRol };

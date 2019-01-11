@@ -2,10 +2,10 @@ const express = require('express');
 const pick = require('object.pick');
 const bcrypt = require('bcrypt');
 const app = express();
-const { validateToken } = require('../middlewares/authentication');
+const { validarToken, validarRol } = require('../middlewares/authentication');
 const Usuario = require('../models/user');
 
-app.get('/usuario', validateToken, (req, res) => {
+app.get('/usuario', [validarToken, validarRol], (req, res) => {
 
     let desde = Number(req.query.desde || 0);
     let limite = Number(req.query.limite || 0);
@@ -66,7 +66,7 @@ app.post('/usuario', (req, res) => {
     });
 });
 
-app.put('/usuario/:id', validateToken, (req, res) => {
+app.put('/usuario/:id', validarToken, (req, res) => {
     let id = req.params.id;
     let body = pick(req.body, ['nombre', 'email', 'role', 'img', 'estado']);
 
@@ -94,7 +94,7 @@ app.put('/usuario/:id', validateToken, (req, res) => {
     });
 });
 
-app.delete('/usuario/:id', validateToken, (req, res) => {
+app.delete('/usuario/:id', validarToken, (req, res) => {
     let id = req.params.id;
     //Cambio de estado.
     Usuario.findOneAndDelete(id, { estado: false }, { new: true }, (err, userDB) => {
