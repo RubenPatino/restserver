@@ -20,3 +20,6 @@ process.env.KEY = process.env.KEY || 'misuperllavesecreta';
 
 //tiempo para el token
 process.env.EXPIRE = '1h';
+
+//google cliente ID
+process.env.CLIENT_ID = process.env.CLIENT_ID || '542751047808-p92m20c0gg1ak96irdiqq4g8re4hboh9.apps.googleusercontent.com';
