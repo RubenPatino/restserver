@@ -102,7 +102,7 @@ app.post('/google', async(req, res) => {
     });
 
     if (userGoogle.email) {
-        console.log(token);
+        //console.log(token);
         //se verifica si el email esta registrado.
         Usuario.findOne({ email: userGoogle.email }, (err, userDB) => {
             // retorna un error al procesar la peticion.
