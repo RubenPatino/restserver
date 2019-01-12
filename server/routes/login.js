@@ -60,20 +60,10 @@ app.post('/login', (req, res) => {
     });
 });
 
-function verifyToken(token) {
-    return new Promise((resolve, reject) => {
-        const ticket = client.verifyIdToken({
-            idToken: token,
-            audience: process.env.CLIENT_ID
-        });
-        if (ticket) {
-            resolve(console.log(ticket));
-        } else {
-            reject('Hay errores en el toket');
-        }
-    });
 
-}
+// validacion por google
+
+
 async function verify(token) {
     const ticket = await client.verifyIdToken({
         idToken: token,
@@ -92,83 +82,101 @@ async function verify(token) {
 app.post('/google', async(req, res) => {
     //se optiene el token.
     let token = req.body.idtoken;
-    // se verifica el token.
+
+    if (!token) {
+        return res.status(403).json({
+            status: false,
+            message: 'Documento sin cabezera.'
+        });
+    };
+
+
+
+    //console.log(token);
+    // se valida el token.
     let userGoogle = await verify(token).catch(err => {
         return res.status(403).json({
             status: false,
-            message: err
+            err: `${err}`
         });
     });
-    //se verifica si el email esta registrado.
-    Usuario.findOne({ email: userGoogle.email }, (err, userDB) => {
-        // retorna un error al procesar la peticion.
-        if (err) {
-            return res.status(500).json({
-                status: false,
-                err
-            });
-        }
-        console.log(userDB);
-        // si el email esta registrado. 
-        if (userDB) {
 
-            // si el usuario antes habia iniciado sesion desde google.
-            if (userDB.google) {
-
-                // se verifica que el usuario este activado.
-                if (!userDB.estado) {
-                    return res.status(400).json({
-                        status: false,
-                        message: 'El usuario esta desactivado.'
-                    });
-
-                    // si esta activado se le concede el token.
-                } else {
-                    let token = jwt.sign({ userDB }, process.env.KEY, { expiresIn: process.env.EXPIRE });
-                    res.json({ token });
-                }
-
-                //si esta registrado pero nunca ha iniado sesion con google.
-            } else {
-                return res.status(400).json({
+    if (userGoogle.email) {
+        console.log(token);
+        //se verifica si el email esta registrado.
+        Usuario.findOne({ email: userGoogle.email }, (err, userDB) => {
+            // retorna un error al procesar la peticion.
+            if (err) {
+                return res.status(500).json({
                     status: false,
-                    message: 'Debe iniciar sesion normalmente.'
+                    err
                 });
             }
+            // si el email esta registrado. 
+            if (userDB) {
 
-            //Si el email no esta registrado.
-        } else {
+                // si el usuario antes habia iniciado sesion desde google.
+                if (userDB.google) {
 
-            // se instancia un nuevo esquema
-            let user = new Usuario({
-                nombre: userGoogle.name,
-                email: userGoogle.email,
-                password: ':P',
-                img: userGoogle.img,
-                google: userGoogle.google
-            });
+                    // se verifica que el usuario este activado.
+                    if (!userDB.estado) {
+                        return res.status(400).json({
+                            status: false,
+                            message: 'El usuario esta desactivado.'
+                        });
 
-            //se guarda en la base de datos.
+                        // si esta activado se le concede el token.
+                    } else {
+                        let token = jwt.sign({ userDB }, process.env.KEY, { expiresIn: process.env.EXPIRE });
+                        res.json({
+                            status: true,
+                            userDB,
+                            token
+                        });
+                    }
 
-            user.save((err, userDB) => {
-                if (err) {
-                    return res.status(500).json({
+                    //si esta registrado pero nunca ha iniado sesion con google.
+                } else {
+                    return res.status(400).json({
                         status: false,
-                        err
+                        message: 'Debe iniciar sesion normalmente.'
                     });
                 }
-                // se le concede un token
-                let token = jwt.sign({ userDB }, process.env.KEY, { expiresIn: process.env.EXPIRE });
 
-                //se imprime en pantalla.
-                res.json({
-                    ok: true,
-                    userDB,
-                    token
+                //Si el email no esta registrado.
+            } else {
+
+                // se instancia un nuevo esquema
+                let user = new Usuario({
+                    nombre: userGoogle.name,
+                    email: userGoogle.email,
+                    password: ':P',
+                    img: userGoogle.img,
+                    google: userGoogle.google
                 });
-            });
-        };
-    });
+
+                //se guarda en la base de datos.
+
+                user.save((err, userDB) => {
+                    if (err) {
+                        return res.status(500).json({
+                            status: false,
+                            err
+                        });
+                    }
+                    // se le concede un token
+                    let token = jwt.sign({ userDB }, process.env.KEY, { expiresIn: process.env.EXPIRE });
+
+                    //se imprime en pantalla.
+                    res.json({
+                        ok: true,
+                        userDB,
+                        token
+                    });
+                });
+            };
+        });
+    }
 });
 
 module.exports = app;
