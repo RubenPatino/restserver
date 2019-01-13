@@ -1,9 +1,9 @@
 const express = require('express');
-const pick = require('object.pick');
-const bcrypt = require('bcrypt');
+const pick = require('object.pick'); // solo tomar algunos datos del body
+const bcrypt = require('bcrypt'); //encriptar el password
 const app = express();
 const { validarToken, validarRol } = require('../middlewares/authentication');
-const Usuario = require('../models/user');
+const Usuario = require('../models/user'); //Squema de usuario.
 
 app.get('/usuario', [validarToken, validarRol], (req, res) => {
 
@@ -73,7 +73,8 @@ app.put('/usuario/:id', validarToken, (req, res) => {
     // delete body.password;
     // delete body.google;
 
-
+    //new:true (devuelve el userdb modificado)
+    //runValidators (valida el esquema)
     Usuario.findOneAndUpdate(id, body, { new: true, runValidators: true }, (err, userDB) => {
         if (err) {
             return res.status(500).json({

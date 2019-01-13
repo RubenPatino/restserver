@@ -3,6 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 const validator = require('validator');
 
 let Schema = mongoose.Schema;
+
 let rolesPermitidos = {
     values: ['ADMIN-ROLE', 'USER-ROLE'],
     message: '{VALUE} no es un rol valido.'
@@ -47,6 +48,7 @@ let usuarioSchema = new Schema({
     }
 });
 
+// se genera un nuevo objecto que no muestre el password.
 usuarioSchema.methods.toJSON = function() {
     let user = this;
     let userObject = user.toObject();
@@ -55,6 +57,7 @@ usuarioSchema.methods.toJSON = function() {
     return userObject;
 }
 
+//se verifica que el correo no este registrado.
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} El correo electronico ya esta registrado.' });
 
 module.exports = mongoose.model('Usuarios', usuarioSchema);
