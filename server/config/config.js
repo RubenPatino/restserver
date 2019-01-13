@@ -12,7 +12,7 @@ let entorno = process.env.NODE_ENV || 'dev'; // se verifica el entorno donde se 
 if (entorno === 'dev') {
     process.env.MONGO_URI = 'mongodb://localhost:27017/cafe'; //si es desarrollo. uri mongo local.
 } else {
-    process.env.MONGO_URI = `'${process.env.H_URI}'`; //uri mongo mLap
+    process.env.MONGO_URI = URI; //uri mongo mLap
 }
 
 //key para el token
