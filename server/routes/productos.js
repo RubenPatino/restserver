@@ -5,8 +5,8 @@ const Producto = require('../models/productos');
 
 app.get('/producto', validarToken, (req, res) => {
     Producto.find({})
-        .populate('usuario', 'nombre email')
-        .populate('categoria', 'nombre')
+        // .populate('usuario', 'nombre email')
+        .populate([{ path: 'usuario' }, { path: 'categoria' }])
         .exec((err, dataDB) => {
             if (err) {
                 return res.status(500).json({
@@ -14,25 +14,52 @@ app.get('/producto', validarToken, (req, res) => {
                     err
                 });
             };
-            if (!dataDB) {
+            if (dataDB.length <= 0) {
                 return res.status(400).json({
                     status: false,
                     err: {
                         message: 'Nada para mostrar'
                     }
                 });
-            };
+            }
             res.json({
                 status: true,
                 Productos: dataDB
             });
         });
 });
+app.get('/producto/buscar/:termino', validarToken, (req, res) => {
+    let termino = req.params.termino;
+    let regTermino = new RegExp(termino, 'i'); //buscar por cualquier termino, 'i' minusculas o mayusculas
+
+    Producto.find({ nombre: regTermino, estado: true }).exec((err, dataDB) => {
+        if (err) {
+            return res.status(500).json({
+                status: false,
+                err
+            });
+        };
+        if (dataDB.length <= 0) {
+            return res.status(400).json({
+                status: false,
+                err: {
+                    message: 'Nada para mostrar.'
+                }
+            });
+        };
+        res.json({
+            status: true,
+            producto: dataDB
+        });
+    });
+
+
+});
 app.post('/producto', validarToken, (req, res) => {
     let body = req.body;
     let nombre = body.nombre;
     let precio = body.precio;
-    let idCategoria = body.idCategoria;
+    let idCategoria = body.categoria;
     let idUsuario = userLogin._id;
 
     let producto = new Producto({
@@ -50,7 +77,7 @@ app.post('/producto', validarToken, (req, res) => {
             });
         };
         if (!dataDB) {
-            return res.status(500).json({
+            return res.status(400).json({
                 status: false,
                 err: {
                     message: 'No se pudo guardar.'

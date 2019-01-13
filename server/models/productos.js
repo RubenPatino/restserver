@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
-
+const unique = require('mongoose-unique-validator');
 let Schema = mongoose.Schema;
 
-let productosModel = new Schema({
+let productSchema = new Schema({
     nombre: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     precio: {
         type: Number,
@@ -13,12 +14,19 @@ let productosModel = new Schema({
     },
     categoria: {
         type: Schema.Types.ObjectId,
-        ref: 'Categoria'
+        ref: 'Categoria',
+        required: true
     },
     usuario: {
         type: Schema.Types.ObjectId,
-        ref: 'Usuarios'
+        ref: 'Usuarios',
+        required: true
+    },
+    estado: {
+        type: Boolean,
+        default: true
     }
 });
+productSchema.plugin(unique, { message: '{PATH}, El producto ya existe.' });
 
-module.exports = mongoose.model('Productos', productosModel);
+module.exports = mongoose.model('Productos', productSchema);

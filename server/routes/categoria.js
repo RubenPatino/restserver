@@ -7,7 +7,7 @@ const app = express();
 const Categoria = require('../models/categoria');
 const User = require('../models/user');
 
-app.post('/categoria', validarToken, (req, res) => {
+app.post('/categoria', [validarToken, validarRol], (req, res) => {
     let body = pick(req.body, 'nombre');
     let userID = userLogin._id;
     let nombre = body.nombre;
@@ -33,7 +33,7 @@ app.get('/categoria', [validarToken, validarRol], (req, res) => {
 
     Categoria.find({})
         .sort('nombre') //organiza los elementos desc
-        .populate('usuario', 'nombre email') //carga datos de otra tabla
+        .populate('usuario', 'nombre email') //carga datos del usuario admin de otra tabla
         .exec((err, dataDB) => {
             if (err) {
                 return res.status(500).json({
@@ -57,7 +57,7 @@ app.get('/categoria', [validarToken, validarRol], (req, res) => {
         });
 });
 
-app.get('/categoria/:id', validarToken, (req, res) => {
+app.get('/categoria/:id', [validarToken, validarRol], (req, res) => {
     let id = req.params.id;
     Categoria.find({ usuario: id }, 'nombre').exec((err, datos) => {
         if (err) {
@@ -74,7 +74,7 @@ app.get('/categoria/:id', validarToken, (req, res) => {
     });
 });
 
-app.put('/categoria/:id', validarToken, (req, res) => {
+app.put('/categoria/:id', [validarToken, validarRol], (req, res) => {
 
     let idCategoria = req.params.id;
     let nombreCategoria = req.body.nombre;
