@@ -1,18 +1,18 @@
 //puerto
 
-process.env.PORT = process.env.PORT || 3000;
+process.env.PORT = process.env.PORT || 3000; //puero para el server. heroku ? || local 3000
 
 //entorno.
 
-let entorno = process.env.NODE_ENV || 'dev';
+let entorno = process.env.NODE_ENV || 'dev'; // se verifica el entorno donde se esta trabajando. 'dev'=desarrollador
 
 //mongo conecction
 //'mongodb://localhost:27017/cafe'
 //mongodb://cafe-user:Admin2113@ds153304.mlab.com:53304/cafe
 if (entorno === 'dev') {
-    process.env.MONGO_URI = 'mongodb://localhost:27017/cafe';
+    process.env.MONGO_URI = 'mongodb://localhost:27017/cafe'; //si es desarrollo. uri mongo local.
 } else {
-    process.env.MONGO_URI = 'mongodb://cafe-user:Admin2113@ds153304.mlab.com:53304/cafe'; //process.env.H_URI;
+    process.env.MONGO_URI = `'${process.env.H_URI}'`; //uri mongo mLap
 }
 
 //key para el token
