@@ -30,7 +30,8 @@ function validarRol(req, res, next) {
     if (user_rol !== 'ADMIN-ROLE') {
         return res.status(401).json({
             status: false,
-            message: 'Solo para administradores.'
+            message: 'Solo para administradores.',
+            user: userLogin
         });
     }
 

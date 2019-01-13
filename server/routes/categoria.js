@@ -22,6 +22,12 @@ app.post('/categoria', [validarToken, validarRol], (req, res) => {
                 err
             });
         };
+        if (dataDB.length <= 0) {
+            return res.status(400).json({
+                status: false,
+                err: { message: 'No se pudo guardar la categoria.' }
+            });
+        }
         res.json({
             status: true,
             categoria: dataDB
@@ -41,7 +47,7 @@ app.get('/categoria', [validarToken, validarRol], (req, res) => {
                     err
                 });
             };
-            if (!dataDB) {
+            if (dataDB.length <= 0) {
                 return res.status(400).json({
                     status: false,
                     err: {
@@ -66,6 +72,12 @@ app.get('/categoria/:id', [validarToken, validarRol], (req, res) => {
                 err
             });
         };
+        if (dataDB.length <= 0) {
+            return res.status(400).json({
+                status: false,
+                err: { message: 'Nada para mostrar.' }
+            });
+        }
         res.json({
             status: true,
             categorias: datos
@@ -83,14 +95,14 @@ app.put('/categoria/:id', [validarToken, validarRol], (req, res) => {
     let update = { nombre: nombreCategoria };
     let options = { new: true, runValidators: true };
 
-    Categoria.findOneAndUpdate(id, update, options, (err, categoriaDB) => {
+    Categoria.findOneAndUpdate(id, update, options, (err, dataDB) => {
         if (err) {
             return res.status(500).json({
                 status: false,
                 err
             });
         };
-        if (!categoriaDB) {
+        if (dataDB.length <= 0) {
             return res.status(400).json({
                 status: false,
                 message: 'Datos incorrectos.'
@@ -98,21 +110,21 @@ app.put('/categoria/:id', [validarToken, validarRol], (req, res) => {
         };
         res.json({
             status: true,
-            categoria: categoriaDB
+            categoria: dataDB
         });
     });
 });
 app.delete('/categoria/:id', [validarToken, validarRol], (req, res) => {
     let idCategoria = req.params.id;
     let conditions = { _id: idCategoria };
-    Categoria.findOneAndDelete(conditions, (err, resDB) => {
+    Categoria.findOneAndDelete(conditions, (err, dataDB) => {
         if (err) {
             return res.status(500).json({
                 status: false,
                 err
             });
         };
-        if (!resDB) {
+        if (dataDB.length <= 0) {
             return res.status(400).json({
                 status: false,
                 message: 'No se encontro nada.'
@@ -120,7 +132,7 @@ app.delete('/categoria/:id', [validarToken, validarRol], (req, res) => {
         };
         res.json({
             status: true,
-            message: `Categoria ${resDB.nombre} borrada.`
+            message: `Categoria ${dataDB.nombre} borrada.`
         });
     });
 });
