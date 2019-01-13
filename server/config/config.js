@@ -12,7 +12,7 @@ let entorno = process.env.NODE_ENV || 'dev';
 if (entorno === 'dev') {
     process.env.MONGO_URI = 'mongodb://localhost:27017/cafe';
 } else {
-    process.env.MONGO_URI = process.env.H_URI;
+    process.env.MONGO_URI = 'mongodb://cafe-user:Admin2113@ds153304.mlab.com:53304/cafe'; //process.env.H_URI;
 }
 
 //key para el token
