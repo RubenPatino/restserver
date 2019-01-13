@@ -15,7 +15,7 @@ app.post('/categoria', [validarToken, validarRol], (req, res) => {
         nombre: nombre,
         usuario: userID
     });
-    categoria.save((err, cateDB) => {
+    categoria.save((err, dataDB) => {
         if (err) {
             return res.status(500).json({
                 status: false,
@@ -24,7 +24,7 @@ app.post('/categoria', [validarToken, validarRol], (req, res) => {
         };
         res.json({
             status: true,
-            cateDB
+            categoria: dataDB
         });
     });
 });
