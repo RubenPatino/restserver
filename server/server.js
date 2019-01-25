@@ -16,7 +16,6 @@ app.use(express.static(path.resolve(__dirname, '../public')));
 //Routes
 app.use(require('./routes/index'));
 
-
 // daba base mongo connection
 require('./db/connect');
 
